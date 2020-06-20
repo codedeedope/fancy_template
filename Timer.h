@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <array>
 
 class Timer
 {
@@ -13,17 +13,10 @@ private:
 	uint32_t timerNumber;
 	int (*timerExternalISR)(void);
 
-	static std::vector<Timer*> timerAllList;
+	static std::array<Timer*, 6> timerAllList;
 
-	template<uint32_t N>
-	static int internalISR()
-	{
-		//timerAllList[N]->clearInterruptFlag();
-		//timerAllList[N]->timerExternalISR();
-		return N;
-	}
+	template<uint32_t N> static int internalISR();
 
 	// tmp for test
-public: static std::vector<int (*)(void)> timerInternalISRList;
+public: static const std::array<int (* const)(void), 6> timerInternalISRList;
 };
-

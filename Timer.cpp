@@ -1,8 +1,16 @@
 #include "Timer.h"
 
-std::vector<Timer*> Timer::timerAllList(6);
+template<uint32_t N>
+static int Timer::internalISR()
+{
+	//timerAllList[N]->clearInterruptFlag();
+	//timerAllList[N]->timerExternalISR();
+	return N;
+}
+
+std::array<Timer*, 6> Timer::timerAllList({});
 // This shall be automated
-std::vector<int (*)(void)> Timer::timerInternalISRList({ &Timer::internalISR<0>, &Timer::internalISR<1>, &Timer::internalISR<2>, &Timer::internalISR<3>, &Timer::internalISR<4>, &Timer::internalISR<5> });
+const std::array<int (* const)(void), 6> Timer::timerInternalISRList({ &Timer::internalISR<0>, &Timer::internalISR<1>, &Timer::internalISR<2>, &Timer::internalISR<3>, &Timer::internalISR<4>, &Timer::internalISR<5> });
 
 Timer::Timer(uint32_t timerNumber, int (*externalISR)(void))
 {
