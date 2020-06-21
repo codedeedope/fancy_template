@@ -1,5 +1,7 @@
 #include "Timer.h"
 
+// The Templates
+////////////////////////////////////////////////////////////
 template<uint32_t N>
 static int Timer::internalISR()
 {
@@ -8,9 +10,16 @@ static int Timer::internalISR()
 	return N;
 }
 
+#define CODE_AT(NUM) &Timer::internalISR<NUM>
+#include "ArrayIndexAtIndexTemplate.h"
+#define ARRAY(TYPE, NUMBER, NAME) std::array<TYPE, NUMBER> NAME(ArrayIndexAtIndexTemplate::Numbers<TYPE, NUMBER>::number())
+
+const ARRAY(Timer::ISR_type, 6, Timer::timerInternalISRList);
+// equal to
+//const std::array<int (* const)(void), 6> Timer::timerInternalISRList({ &Timer::internalISR<0>, &Timer::internalISR<1>, &Timer::internalISR<2>, &Timer::internalISR<3>, &Timer::internalISR<4>, &Timer::internalISR<5> });
+////////////////////////////////////////////////////////////
+
 std::array<Timer*, 6> Timer::timerAllList({});
-// This shall be automated
-const std::array<int (* const)(void), 6> Timer::timerInternalISRList({ &Timer::internalISR<0>, &Timer::internalISR<1>, &Timer::internalISR<2>, &Timer::internalISR<3>, &Timer::internalISR<4>, &Timer::internalISR<5> });
 
 Timer::Timer(uint32_t timerNumber, int (*externalISR)(void))
 {
@@ -49,4 +58,3 @@ void Timer::clearInterruptFlag()
 {
 	return;
 }
-
