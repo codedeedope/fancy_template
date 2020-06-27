@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////
 #include "ArrayIndexAtIndexTemplate.h"
 
-template<uint32_t N>
+template<size_t N>
 static int internalISR()
 {
 	//timerAllList[N]->clearInterruptFlag();
@@ -13,7 +13,7 @@ static int internalISR()
 }
 
 
-template<uint32_t N>
+template<size_t N>
 struct getPointerToInternalISR {
 	static Timer::ISR_type apply() {
 		return &internalISR<N>;
