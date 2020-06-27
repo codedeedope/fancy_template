@@ -2,21 +2,28 @@
 
 // The Templates
 ////////////////////////////////////////////////////////////
+#include "ArrayIndexAtIndexTemplate.h"
+
 template<uint32_t N>
-static int Timer::internalISR()
+static int internalISR()
 {
 	//timerAllList[N]->clearInterruptFlag();
 	//timerAllList[N]->timerExternalISR();
 	return N;
 }
 
-#define CODE_AT(NUM) &Timer::internalISR<NUM>
-#include "ArrayIndexAtIndexTemplate.h"
-#define ARRAY(TYPE, NUMBER, NAME) std::array<TYPE, NUMBER> NAME(ArrayIndexAtIndexTemplate::Numbers<TYPE, NUMBER>::number())
 
-const ARRAY(Timer::ISR_type, 6, Timer::timerInternalISRList);
+template<uint32_t N>
+struct getPointerToInternalISR {
+	static Timer::ISR_type apply() {
+		return &internalISR<N>;
+	}
+};
+
+
+const std::array<Timer::ISR_type, 6> Timer::timerInternalISRList(ArrayIndexAtIndexTemplate::Numbers<ISR_type, 6, getPointerToInternalISR>::number());
 // equal to
-//const std::array<int (* const)(void), 6> Timer::timerInternalISRList({ &Timer::internalISR<0>, &Timer::internalISR<1>, &Timer::internalISR<2>, &Timer::internalISR<3>, &Timer::internalISR<4>, &Timer::internalISR<5> });
+//const std::array<Timer::ISR_type, 6> Timer::timerInternalISRList({ &Timer::internalISR<0>, &Timer::internalISR<1>, &Timer::internalISR<2>, &Timer::internalISR<3>, &Timer::internalISR<4>, &Timer::internalISR<5> });
 ////////////////////////////////////////////////////////////
 
 std::array<Timer*, 6> Timer::timerAllList({});
