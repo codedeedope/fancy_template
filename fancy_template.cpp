@@ -4,8 +4,8 @@
 #include <iostream>
 #include "Timer.h"
 
-#define PTR(NUM) int (*p##NUM)(void) = Timer::timerInternalISRList[NUM];
-#define EX(NUM) int i##NUM = p##NUM();
+#define PTR(NUM) size_t (*p##NUM)(void) = Timer::timerInternalISRList[NUM];
+#define EX(NUM) size_t i##NUM = p##NUM();
 #define PTREX(NUM) PTR(NUM) EX(NUM)
 
 int main()
@@ -22,3 +22,4 @@ int main()
 		PTREX(5)
 
 }
+

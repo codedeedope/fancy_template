@@ -5,7 +5,7 @@
 #include "ArrayIndexAtIndexTemplate.h"
 
 template<size_t N>
-static int internalISR()
+static size_t internalISR()
 {
 	//timerAllList[N]->clearInterruptFlag();
 	//timerAllList[N]->timerExternalISR();
@@ -21,17 +21,18 @@ struct getPointerToInternalISR {
 };
 
 
-const std::array<Timer::ISR_type, 6> Timer::timerInternalISRList(ArrayIndexAtIndexTemplate::Numbers<ISR_type, 6, getPointerToInternalISR>::number());
+const std::array<Timer::ISR_type, Timer::timerAllCount> Timer::timerInternalISRList(ArrayIndexAtIndexTemplate::FillArrayIndexDependent<ISR_type, Timer::timerAllCount, getPointerToInternalISR>::get());
 // equal to
 //const std::array<Timer::ISR_type, 6> Timer::timerInternalISRList({ &Timer::internalISR<0>, &Timer::internalISR<1>, &Timer::internalISR<2>, &Timer::internalISR<3>, &Timer::internalISR<4>, &Timer::internalISR<5> });
 ////////////////////////////////////////////////////////////
 
-std::array<Timer*, 6> Timer::timerAllList({});
+std::array<Timer*, Timer::timerAllCount> Timer::timerAllList({});
 
-Timer::Timer(uint32_t timerNumber, int (*externalISR)(void))
+
+Timer::Timer(size_t timerNumber, ISR_type externalISR)
 {
 	// Checks
-	if (timerNumber > 5) {
+	if (timerNumber > (Timer::timerAllCount - 1)) {
 		throw;
 	}
 
@@ -65,3 +66,4 @@ void Timer::clearInterruptFlag()
 {
 	return;
 }
+
