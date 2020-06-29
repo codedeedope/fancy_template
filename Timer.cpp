@@ -4,6 +4,8 @@
 ////////////////////////////////////////////////////////////
 #include "ArrayIndexAtIndexTemplate.h"
 
+//Ein Wrapper für externalISR
+//Rufe clearInteruptFlag() auf, bevor externalISR aufgerufen wird.
 template<size_t N>
 static size_t internalISR()
 {
@@ -13,6 +15,7 @@ static size_t internalISR()
 }
 
 
+//Gibt einen Funktionszeiger auf die internalISR an der timerNumber korrespondierenden Stelle zurück.
 template<size_t N>
 struct getPointerToInternalISR {
 	static Timer::ISR_type apply() {

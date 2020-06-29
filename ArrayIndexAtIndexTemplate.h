@@ -57,6 +57,6 @@ namespace ArrayIndexAtIndexTemplate {
 		//using ConcreteArrayAssignmentNumberConsumer = typename ConcreteArrayAssignment::template NumberConsumer<m>;
 	};
 	template<typename ArrayEntryType, size_t arraySize, template<size_t> typename NumberConsumer>
-	typename FillArrayIndexDependent<ArrayEntryType, arraySize, NumberConsumer>::ArrayType FillArrayIndexDependent<ArrayEntryType, arraySize, NumberConsumer>::arr;
+	typename FillArrayIndexDependent<ArrayEntryType, arraySize, NumberConsumer>::ArrayType FillArrayIndexDependent<ArrayEntryType, arraySize, NumberConsumer>::arr({});
 }
 
