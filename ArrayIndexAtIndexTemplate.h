@@ -43,7 +43,8 @@ namespace ArrayIndexAtIndexTemplate {
 			static_assert(arraySize >= 1, "arraySize has to at least 1!");
 			static_assert(!std::is_const<ArrayEntryType>(), "ArrayEntryType shall not be const!");
 
-			Counter<arraySize, typename ConcreteArrayAssignment::NumberConsumer>::down();
+			// In a declaration or a definition of a template, including alias template, a name that is not a member of the current instantiation and is dependent on a template parameter is not considered to be a type unless the keyword typename is used or unless it was already established as a type name, e.g. with a typedef declaration or by being used to name a base class.
+			Counter<arraySize, ConcreteArrayAssignment::NumberConsumer>::down();
 			return arr;
 		}
 
